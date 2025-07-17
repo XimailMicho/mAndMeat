@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: mandm
+      POSTGRES_USER: mandmuser
+      POSTGRES_PASSWORD: mandmpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: mandm-backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mandm
+      SPRING_DATASOURCE_USERNAME: mandmuser
+      SPRING_DATASOURCE_PASSWORD: mandmpass
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: mandm-frontend
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+volumes:
+  db-data:
