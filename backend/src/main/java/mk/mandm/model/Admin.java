@@ -1,6 +1,8 @@
 package mk.mandm.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +19,4 @@ public class Admin extends User {
         super(email, password, role);
     }
 
-    // You can also add more constructors if Admin had additional fields
 }

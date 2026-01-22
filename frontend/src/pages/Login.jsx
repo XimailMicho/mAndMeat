@@ -1,28 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/AuthService.js";
+import { login } from "../services/authService.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const { setTokenAndLoadUser } = useAuth();
 
-  const [email, setEmail] = useState("admin@email.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
+    if (!email || !password) {
+      setError("Please enter email and password.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const token = await login(email, password);
-      setToken(token);
+      await setTokenAndLoadUser(token);
       navigate("/");
     } catch (err) {
       setError(err?.message ?? "Login failed");
+      setPassword("");
     } finally {
       setLoading(false);
     }
@@ -38,8 +44,10 @@ export default function Login() {
           <input
             className="input"
             type="email"
+            autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="email@provider.com"
           />
         </label>
 
@@ -48,6 +56,7 @@ export default function Login() {
           <input
             className="input"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

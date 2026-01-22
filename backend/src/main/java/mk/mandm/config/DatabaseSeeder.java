@@ -1,32 +1,40 @@
 package mk.mandm.config;
 
-
-import mk.mandm.model.Admin;
+import mk.mandm.model.User;
 import mk.mandm.model.Role;
 import mk.mandm.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class    DatabaseSeeder {
+@Component
+public class DatabaseSeeder implements CommandLineRunner {
 
-    @Bean
-    public CommandLineRunner seedDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            if (userRepository.findByEmail("admin@email.com").isEmpty()) {
-                Admin admin = new Admin();
-                admin.setEmail("admin@email.com");
-                admin.setPassword(passwordEncoder.encode("admin123")); // store hashed password
-                admin.setRole(Role.ADMIN);
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-                userRepository.save(admin);
+    public DatabaseSeeder(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-                System.out.println("Admin user seeded.");
-            } else {
-                System.out.println("Admin user already exists. Skipping seed.");
-            }
-        };
+    @Override
+    public void run(String... args) {
+        seedUserIfMissing("admin@email.com", "admin123", Role.ADMIN);
+        seedUserIfMissing("worker@email.com", "worker123", Role.WORKER);
+        seedUserIfMissing("partner@email.com", "partner123", Role.PARTNER);
+    }
+
+    private void seedUserIfMissing(String email, String rawPassword, Role role) {
+        if (userRepository.existsByEmail(email)) return;
+
+        User u = new User();
+        u.setEmail(email);
+        u.setPassword(passwordEncoder.encode(rawPassword));
+        u.setRole(role);
+
+        userRepository.save(u);
+        System.out.println("Seeded user: " + email + " role=" + role);
     }
 }

@@ -6,14 +6,15 @@ export async function login(email, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(text || `Login failed (${res.status})`);
-  }
-
+  if (!res.ok) throw new Error(await res.text());
   const data = await res.json();
-  if (!data?.token) throw new Error("Login response missing token");
-
   return data.token;
+}
+
+export async function me(token) {
+  const res = await fetch(`${API_BASE}/api/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Not authenticated");
+  return await res.json(); // {id,email,role}
 }
