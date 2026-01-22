@@ -13,29 +13,30 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e) {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    if (!email || !password) {
-      setError("Please enter email and password.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const token = await login(email, password);
-      await setTokenAndLoadUser(token);
-      navigate("/");
-    } catch (err) {
-      setError(err?.message ?? "Login failed");
-      setPassword("");
-    } finally {
-      setLoading(false);
-    }
+  if (!email.trim() || !password.trim()) {
+    setError("Please enter email and password.");
+    return;
   }
 
+  setLoading(true);
+  try {
+    const token = await login(email, password);
+    await setTokenAndLoadUser(token);
+    navigate("/");
+  } catch (err) {
+    // show backend messages if any
+    setError(err?.message || "Bad credentials");
+  } finally {
+    setLoading(false);
+  }
+}
+
+
   return (
-    <main className="container">
+    <main className="containerLogin">
       <h2>Login</h2>
 
       <form className="card" onSubmit={onSubmit}>

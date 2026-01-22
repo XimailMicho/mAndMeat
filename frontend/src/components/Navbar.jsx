@@ -6,18 +6,22 @@ export default function Navbar() {
 
   return (
     <nav className="nav">
-      <div className="nav__brand">
-        <Link to="/">mAndMeat</Link>
+      <div className="nav__left">
+        <Link className="nav__brand" to="/">M&M 🥩</Link>
       </div>
 
-      <div className="nav__links">
+      <div className="nav__right">
         <Link to="/">Home</Link>
-        {!user && <Link to="/login">Login</Link>}
+
         {user?.role === "ADMIN" && <Link to="/admin">Admin</Link>}
-        {user && (
-          <button className="btn btn--small" onClick={logout}>
-            Logout
-          </button>
+
+        {user ? (
+          <>
+            <span className="nav__hello">Hello, {user.email}</span>
+            <button className="btn btn--small" onClick={logout}>Logout</button>
+          </>
+        ) : (
+          <Link to="/login">Login</Link>
         )}
       </div>
     </nav>
