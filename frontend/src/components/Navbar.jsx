@@ -6,6 +6,7 @@ export default function Navbar() {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <nav className="nav">
       <div className="nav__left">
         <Link className="nav__brand" to="/">M&M 🥩</Link>
@@ -30,6 +31,14 @@ export default function Navbar() {
       <nav className="nav__right">
         <Link to="/">Home</Link>
 
+=======
+    <header className="nav">
+      <Link className="nav__brand" to="/">M&M</Link>
+
+      <nav className="nav__right">
+        <Link to="/">Home</Link>
+
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         {!user && <Link to="/login">Login</Link>}
 
         {user?.role === "PARTNER" && (
@@ -37,6 +46,9 @@ export default function Navbar() {
             <Link to="/app/order/new">New Order</Link>
             <Link to="/app/orders">My Orders</Link>
           </>
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         )}
 

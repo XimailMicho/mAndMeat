@@ -3,7 +3,10 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { createWorker, listWorkers } from "../../services/adminService.js";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 function AddWorkerForm({ onCancel, onCreated }) {
   const { token } = useAuth();
 
@@ -66,6 +69,9 @@ function AddWorkerForm({ onCancel, onCreated }) {
   );
 }
 
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 export default function AdminWorkers() {
   const { token } = useAuth();
@@ -75,12 +81,16 @@ export default function AdminWorkers() {
   const [error, setError] = useState("");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [embg, setEmbg] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [saving, setSaving] = useState(false);
+=======
+  const [showAdd, setShowAdd] = useState(false);
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 =======
   const [showAdd, setShowAdd] = useState(false);
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
@@ -103,6 +113,7 @@ export default function AdminWorkers() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   async function onCreate(e) {
     e.preventDefault();
@@ -140,6 +151,8 @@ export default function AdminWorkers() {
           <input className="input" placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
           <input className="input" placeholder="Surname" value={surname} onChange={e=>setSurname(e.target.value)} />
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
   async function handleCreated() {
     setShowAdd(false);
     await refresh();
@@ -164,11 +177,15 @@ export default function AdminWorkers() {
               {showAdd ? "Close" : "Add Worker"}
             </button>
           </div>
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         </div>
 
         {error && <div className="error">{error}</div>}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         <button className="btn" disabled={saving}>
           {saving ? "Creating..." : "Create Worker"}
@@ -202,6 +219,8 @@ export default function AdminWorkers() {
         </table>
       </div>
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         <div className="tableWrap">
           <table className="table">
             <thead>
@@ -235,6 +254,9 @@ export default function AdminWorkers() {
           onCreated={handleCreated}
         />
       )}
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
     </div>
   );

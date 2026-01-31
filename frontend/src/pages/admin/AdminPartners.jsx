@@ -3,7 +3,10 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { createPartner, listPartners } from "../../services/adminService.js";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 function AddPartnerForm({ onCancel, onCreated }) {
   const { token } = useAuth();
 
@@ -67,6 +70,9 @@ function AddPartnerForm({ onCancel, onCreated }) {
   );
 }
 
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 export default function AdminPartners() {
   const { token } = useAuth();
@@ -75,12 +81,16 @@ export default function AdminPartners() {
   const [loadingList, setLoadingList] = useState(false);
   const [error, setError] = useState("");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [dateCreated, setDateCreated] = useState(""); // yyyy-mm-dd
   const [saving, setSaving] = useState(false);
+=======
+  const [showAdd, setShowAdd] = useState(false);
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 =======
   const [showAdd, setShowAdd] = useState(false);
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
@@ -103,6 +113,7 @@ export default function AdminPartners() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   async function onCreate(e) {
     e.preventDefault();
@@ -143,6 +154,8 @@ export default function AdminPartners() {
           <input className="input" placeholder="Partner name" value={name} onChange={e=>setName(e.target.value)} />
           <input className="input" type="date" value={dateCreated} onChange={e=>setDateCreated(e.target.value)} />
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
   async function handleCreated() {
     setShowAdd(false);
     await refresh();
@@ -167,11 +180,15 @@ export default function AdminPartners() {
               {showAdd ? "Close" : "Add Partner"}
             </button>
           </div>
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         </div>
 
         {error && <div className="error">{error}</div>}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         <button className="btn" disabled={saving}>
           {saving ? "Creating..." : "Create Partner"}
@@ -204,6 +221,8 @@ export default function AdminPartners() {
         </table>
       </div>
 =======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
         <div className="tableWrap">
           <table className="table">
             <thead>
@@ -236,6 +255,9 @@ export default function AdminPartners() {
           onCreated={handleCreated}
         />
       )}
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
 >>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
     </div>
   );
