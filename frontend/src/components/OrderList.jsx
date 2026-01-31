@@ -1,4 +1,7 @@
 import { Fragment, useState } from "react";
+import { formatDateTime, formatDate, formatCurrency } from "../utils/format";
+
+
 
 export default function OrderList({
   orders,
@@ -74,9 +77,9 @@ function FragmentRow({
         <td>{o.id}</td>
         {showPartner && <td>{o.partnerEmail}</td>}
         <td>{renderStatus ? renderStatus(o.status) : o.status}</td>
-        <td>{o.createdAt}</td>
+        <td>{formatDateTime(o.createdAt)}</td>
         <td>{o.deliveryDate ?? "-"}</td>
-        <td>{o.totalMkd}</td>
+        <td>{formatCurrency(o.totalMkd)}</td>
 
         {hasActions && (
           <td

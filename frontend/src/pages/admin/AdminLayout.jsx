@@ -1,54 +1,36 @@
 import { NavLink, Outlet } from "react-router-dom";
 
-function SideLink({ to, title, desc }) {
+function TabLink({ to, children }) {
   return (
     <NavLink
       to={to}
       end
-      className={({ isActive }) => (isActive ? "sideBox active" : "sideBox")}
+      className={({ isActive }) => (isActive ? "tab active" : "tab")}
     >
-      <div className="sideBox__title">{title}</div>
-      <div className="sideBox__desc">{desc}</div>
+      {children}
     </NavLink>
   );
 }
 
 export default function AdminLayout() {
   return (
-    <main className="container">
-      <div className="shell">
-        <aside className="sidebar">
-          <div className="sidebar__title">Admin</div>
+    <main className="container container--wide">
+      <div className="adminTop">
+        <div>
+          <h2 className="h2">Admin</h2>
+          <p className="muted pSub">Manage orders, products and users.</p>
+        </div>
 
-          <div className="sideBoxGroup">
-            <SideLink
-              to="orders"
-              title="Orders"
-              desc="View and approve submitted orders."
-            />
-            <SideLink
-              to="products"
-              title="Products"
-              desc="Manage catalogue and price history."
-            />
-            <SideLink
-              to="partners"
-              title="Partners"
-              desc="Add and list partner accounts."
-            />
-            <SideLink
-              to="workers"
-              title="Workers"
-              desc="Add and list worker accounts."
-            />
-          </div>
-        </aside>
-
-        <section className="content">
-          {/* Right-side area */}
-          <Outlet />
-        </section>
+        <nav className="adminTabs">
+          <TabLink to="orders">Orders</TabLink>
+          <TabLink to="products">Products</TabLink>
+          <TabLink to="partners">Partners</TabLink>
+          <TabLink to="workers">Workers</TabLink>
+        </nav>
       </div>
+
+      {/* Content below tabs */}
+      <Outlet />
     </main>
   );
 }
