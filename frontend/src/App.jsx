@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
@@ -35,7 +35,7 @@ export default function App() {
           }
         >
           {/* /admin shows just the sidebar + empty content */}
-          <Route index element={<div />} />
+          <Route index element={<Navigate to="orders" replace />} />
 
           {/* Right-side outlet pages */}
           <Route path="workers" element={<AdminWorkers />} />

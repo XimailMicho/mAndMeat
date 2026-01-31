@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { createPartner, listPartners } from "../../services/adminService.js";
 
@@ -9,10 +9,12 @@ export default function AdminPartners() {
   const [loadingList, setLoadingList] = useState(false);
   const [error, setError] = useState("");
 
+  const [q, setQ] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [dateCreated, setDateCreated] = useState(""); // yyyy-mm-dd
+  const [dateCreated, setDateCreated] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function refresh() {
@@ -41,10 +43,7 @@ export default function AdminPartners() {
       const payload = { email, password, name };
       if (dateCreated) payload.dateCreated = dateCreated;
       await createPartner(token, payload);
-      setEmail("");
-      setPassword("");
-      setName("");
-      setDateCreated("");
+      setEmail(""); setPassword(""); setName(""); setDateCreated("");
       await refresh();
     } catch (e) {
       setError(e?.message ?? "Failed to create partner");
@@ -53,63 +52,84 @@ export default function AdminPartners() {
     }
   }
 
+  const filtered = useMemo(() => {
+    const s = q.trim().toLowerCase();
+    if (!s) return items;
+    return items.filter(p =>
+      String(p.id).includes(s) ||
+      (p.email ?? "").toLowerCase().includes(s) ||
+      (p.name ?? "").toLowerCase().includes(s)
+    );
+  }, [items, q]);
+
   return (
     <div className="card">
-      <h2 style={{ marginTop: 0 }}>Partners</h2>
-      <p className="muted">Create and list partners.</p>
+      <div className="toolbar">
+        <div>
+          <h2 className="h2">Partners</h2>
+          <p className="muted pSub">Create and manage partner accounts.</p>
+        </div>
 
-      <form className="form" onSubmit={onCreate}>
-        <div className="row">
-          <input className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <div className="toolbar__group">
           <input
-            className="input"
-            placeholder="Temp password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            className="search"
+            placeholder="Search by email or name..."
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
           />
+          <button className="btn btn--ghost" onClick={refresh} disabled={loadingList}>
+            {loadingList ? "Refreshing..." : "Refresh"}
+          </button>
         </div>
+      </div>
 
-        <div className="row">
-          <input className="input" placeholder="Company / Partner name" value={name} onChange={(e) => setName(e.target.value)} />
-          <input className="input" type="date" value={dateCreated} onChange={(e) => setDateCreated(e.target.value)} />
-        </div>
+      <div className="formCard">
+        <h3 className="formTitle">Create Partner</h3>
 
-        <button className="btn" disabled={saving}>
-          {saving ? "Creating..." : "Create Partner"}
-        </button>
-      </form>
+        <form className="form" onSubmit={onCreate}>
+          <div className="row">
+            <input className="input" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
+            <input className="input" placeholder="Temp password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+          </div>
+
+          <div className="row">
+            <input className="input" placeholder="Company / Partner name" value={name} onChange={e=>setName(e.target.value)} />
+            <input className="input" type="date" value={dateCreated} onChange={e=>setDateCreated(e.target.value)} />
+          </div>
+
+          <div className="formActions">
+            <button className="btn" disabled={saving}>
+              {saving ? "Creating..." : "Create Partner"}
+            </button>
+          </div>
+        </form>
+      </div>
+
 
       {error && <div className="error">{error}</div>}
-
-      <div style={{ marginTop: 12 }}>
-        <button className="btn btn--small" onClick={refresh} disabled={loadingList}>
-          {loadingList ? "Refreshing..." : "Refresh"}
-        </button>
-      </div>
 
       <div className="tableWrap">
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th style={{ width: 80 }}>ID</th>
               <th>Email</th>
               <th>Name</th>
-              <th>Date Created</th>
+              <th style={{ width: 160 }}>Date Created</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((p) => (
+            {filtered.map(p => (
               <tr key={p.id}>
-                <td>{p.id}</td>
+                <td className="cell--mono">{p.id}</td>
                 <td>{p.email}</td>
                 <td>{p.name}</td>
                 <td>{p.dateCreated ?? "-"}</td>
               </tr>
             ))}
-            {items.length === 0 && !loadingList && (
+            {filtered.length === 0 && (
               <tr>
-                <td colSpan="4" className="muted">No partners.</td>
+                <td colSpan={4} className="muted">No partners found.</td>
               </tr>
             )}
           </tbody>

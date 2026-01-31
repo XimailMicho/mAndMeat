@@ -37,4 +37,6 @@ public class OrderItem {
     // snapshot at submission (MKD per unit)
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal priceMkdSnapshot;
+    
+
 }
