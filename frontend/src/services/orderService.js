@@ -5,12 +5,18 @@ async function handle(res) {
     const text = await res.text().catch(() => "");
     throw new Error(text || `Request failed (${res.status})`);
   }
-  // some endpoints return empty body
+
+  // 204 No Content
+  if (res.status === 204) return null;
+
+  // Some endpoints might return empty body or non-json
   const ct = res.headers.get("content-type") || "";
   if (!ct.includes("application/json")) return null;
+
   return res.json();
 }
 
+/* PUBLIC PRODUCTS */
 export async function listActiveProducts() {
   const res = await fetch(`${API_BASE}/api/products`);
   return handle(res);
@@ -68,11 +74,25 @@ export async function adminListAllOrders(token) {
   return handle(res);
 }
 
-
 /* WORKER */
-export async function workerListQueue(token) {
+export async function workerQueue(token) {
   const res = await fetch(`${API_BASE}/api/worker/orders`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  return handle(res);
+}
+
+export async function workerSetItemPacked(token, orderId, itemId, packed) {
+  const res = await fetch(
+    `${API_BASE}/api/worker/orders/${orderId}/items/${itemId}/packed`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ packed }),
+    }
+  );
   return handle(res);
 }
