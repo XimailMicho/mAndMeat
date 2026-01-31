@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import {
-  adminApproveOrder,
-  adminListAllOrders,
-} from "../../services/orderService.js";
+import { adminApproveOrder, adminListAllOrders } from "../../services/orderService.js";
 import OrderList from "../../components/OrderList.jsx";
 
 export default function AdminOrders() {
@@ -13,6 +10,9 @@ export default function AdminOrders() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState({}); // orderId -> boolean
+
+  // optional: simple client-side filter later
+  const [statusFilter, setStatusFilter] = useState("ALL");
 
   async function refresh() {
     setError("");
@@ -45,38 +45,70 @@ export default function AdminOrders() {
     }
   }
 
+  const filtered = useMemo(() => {
+    if (statusFilter === "ALL") return orders;
+    return orders.filter((o) => o.status === statusFilter);
+  }, [orders, statusFilter]);
+
   return (
-    <div className="card">
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <div>
-          <h2 style={{ margin: 0 }}>All Orders</h2>
-          <p className="muted" style={{ margin: "0.35rem 0 0" }}>
-            Click an order to view items. You can approve only SUBMITTED orders.
-          </p>
+    <main className="container container--wide">
+      <div className="card card--flat">
+        <div className="toolbar">
+          <div>
+            <h2 className="title" style={{ margin: 0 }}>Orders</h2>
+            <p className="muted" style={{ margin: "0.35rem 0 0" }}>
+              Click an order row to view items. Approve only <b>SUBMITTED</b> orders.
+            </p>
+          </div>
+
+          <div className="toolbar__right">
+            <select
+              className="select"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              aria-label="Filter by status"
+            >
+              <option value="ALL">All</option>
+              <option value="SUBMITTED">Submitted</option>
+              <option value="APPROVED">Approved</option>
+              <option value="IN_PROGRESS">In progress</option>
+              <option value="READY">Ready</option>
+              <option value="DELIVERED">Delivered</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+
+            <button className="btn btn--ghost" onClick={refresh} disabled={loading}>
+              {loading ? "Refreshing..." : "Refresh"}
+            </button>
+          </div>
         </div>
 
-        <button className="btn btn--ghost" onClick={refresh} disabled={loading}>
-          {loading ? "Refreshing..." : "Refresh"}
-        </button>
+        {error && <div className="error">{error}</div>}
+
+        <OrderList
+          orders={filtered}
+          showPartner={true}
+          // (optional) let OrderList show status with a badge
+          renderStatus={(status) => (
+            <span className={`badge badge--${String(status).toLowerCase()}`}>
+              {status}
+            </span>
+          )}
+          actionsForOrder={(o) =>
+            o.status === "SUBMITTED" ? (
+              <button
+                className="btn btn--small btn--primary"
+                disabled={!!saving[o.id]}
+                onClick={() => approve(o.id)}
+              >
+                {saving[o.id] ? "Approving..." : "Approve"}
+              </button>
+            ) : (
+              <span className="muted">—</span>
+            )
+          }
+        />
       </div>
-
-      {error && <div className="error">{error}</div>}
-
-      <OrderList
-        orders={orders}
-        showPartner={true}
-        actionsForOrder={(o) =>
-          o.status === "SUBMITTED" ? (
-            <button
-              className="btn btn--small"
-              disabled={!!saving[o.id]}
-              onClick={() => approve(o.id)}
-            >
-              {saving[o.id] ? "Approving..." : "Approve"}
-            </button>
-          ) : null
-        }
-      />
-    </div>
+    </main>
   );
 }
