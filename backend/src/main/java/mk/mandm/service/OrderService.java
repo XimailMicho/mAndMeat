@@ -259,8 +259,6 @@ public class OrderService {
                     oi.getQuantity(),
                     oi.getPriceMkdSnapshot(),
                     lineTotal,
-
-                    // ✅ NEW packed fields (read-only)
                     oi.isPacked(),
                     oi.getPackedAt(),
                     oi.getPackedBy() != null ? oi.getPackedBy().getEmail() : null
@@ -280,6 +278,7 @@ public class OrderService {
                 o.getDeliveryDate(),
                 o.getNotes(),
                 total,
+                o.getRejectionReason(),
                 items
         );
     }

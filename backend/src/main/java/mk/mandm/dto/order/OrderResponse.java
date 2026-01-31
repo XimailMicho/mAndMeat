@@ -16,5 +16,6 @@ public record OrderResponse(
         LocalDate deliveryDate,
         String notes,
         BigDecimal totalMkd,
+        String rejectionReason,
         List<OrderItemResponse> items
 ) {}
