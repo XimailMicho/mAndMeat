@@ -5,7 +5,7 @@ import mk.mandm.dto.CreateWorkerRequest;
 import mk.mandm.dto.PartnerResponse;
 import mk.mandm.dto.WorkerResponse;
 import mk.mandm.model.Partner;
-import mk.mandm.model.Role;
+import mk.mandm.model.enums.Role;
 import mk.mandm.model.Worker;
 import mk.mandm.repository.PartnerRepository;
 import mk.mandm.repository.UserRepository;

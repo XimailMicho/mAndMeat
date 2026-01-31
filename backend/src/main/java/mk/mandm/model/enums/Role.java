@@ -1,4 +1,4 @@
-package mk.mandm.model;
+package mk.mandm.model.enums;
 
 public enum Role {
     ADMIN,

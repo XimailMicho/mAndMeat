@@ -1,8 +1,41 @@
-:root {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color-scheme: dark;
+:root{
+  --sand: #D9CBA4;
+  --clay: #A67C5D;
+  --warmgray: #C4BBAF;
+  --cream: #F5F5DC;
+  --cocoa: #6E4B3A;
+
+  --bg: #F5F5DC;         /* cream page background */
+  --text: #6E4B3A;       /* cocoa text */
+  --muted: rgba(110,75,58,0.72);
+
+  --panel: rgba(217,203,164,0.38);  /* sand tint panels */
+  --panel2: rgba(196,187,175,0.35); /* warmgray tint */
+  --border: rgba(166,124,93,0.40);  /* clay border */
+  --shadow: 0 10px 24px rgba(110,75,58,0.12);
+<<<<<<< HEAD
+=======
 }
 
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+}
+.muted{ color: var(--muted); }
+
+<<<<<<< HEAD
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.muted{ color: var(--muted); }
+
+<<<<<<< HEAD
 * { box-sizing: border-box; }
 body { background: #0b0f14; color: white; }
 
@@ -28,55 +61,126 @@ body { background: #0b0f14; color: white; }
 }
 
 .label { display: block; margin-bottom: 0.75rem; }
+=======
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.card{
+  background: rgba(245,245,220,0.65);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.btn{
+  background: var(--clay);
+  color: var(--cream);
+  border: 1px solid rgba(110,75,58,0.25);
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.btn:hover{ filter: brightness(1.05); }
+
+.btn--ghost{
+  background: transparent;
+  color: var(--cocoa);
+  border: 1px solid var(--border);
+}
+
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.card{
+  background: rgba(245,245,220,0.65);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.btn{
+  background: var(--clay);
+  color: var(--cream);
+  border: 1px solid rgba(110,75,58,0.25);
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.btn:hover{ filter: brightness(1.05); }
+
+.btn--ghost{
+  background: transparent;
+  color: var(--cocoa);
+  border: 1px solid var(--border);
+}
+
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 
 .input {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  margin-top: 0.3rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: transparent;
-  color: inherit;
+  padding: 0.65rem 0.8rem;
+  margin-top: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid rgba(196,187,175,0.25);
+  background: rgba(245,245,220,0.04);
+  color: var(--text);
 }
-
-.btn {
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-}
-
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-.muted { opacity: 0.7; }
+.label { display: block; margin-bottom: 0.85rem; }
 
 .error {
   margin: 0.75rem 0;
   padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255,0,0,0.35);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 90, 90, 0.4);
+  background: rgba(255, 90, 90, 0.08);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
+/* NAV (clean + no overlap) */
+.nav{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(245,245,220,0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 1rem;
 }
-@media (min-width: 1100px) {
-  .grid { grid-template-columns: 1fr 1fr; }
+
+.nav__right{
+  display:flex;
+  align-items:center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.form { margin-top: 0.75rem; }
-.row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.row .input { flex: 1; min-width: 220px; }
+.nav a{
+  text-decoration:none;
+  color: var(--cocoa);
+  padding: 0.4rem 0.55rem;
+  border-radius: 12px;
+}
+.nav a:hover{ background: rgba(217,203,164,0.45); }
 
-.tableWrap { margin-top: 1rem; overflow: auto; }
-.table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-.table th, .table td { padding: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.12); text-align: left; }
-.table th { opacity: 0.8; font-weight: 600; }
+.nav__brand{ font-weight: 900; letter-spacing: .2px; }
+.nav__hello{ color: var(--muted); }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 .btn--small { padding: 0.35rem 0.6rem; font-size: 0.9rem; }
 
 
@@ -92,10 +196,55 @@ body { background: #0b0f14; color: white; }
 }
 
 .partnerGrid {
+=======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+/* HOME */
+.homeHero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1rem;
+}
+@media (max-width: 980px) {
+  .homeHero { grid-template-columns: 1fr; }
+}
+
+.heroTitle {
+  font-size: 2.1rem;
+  margin: 0;
+  line-height: 1.1;
+}
+.heroTag {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+}
+
+.heroPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.pill {
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217,203,164,0.22);
+  background: rgba(217,203,164,0.06);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.gallery {
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 @media (min-width: 700px) {
   .partnerGrid { grid-template-columns: 1fr 1fr; }
 }
@@ -166,3 +315,196 @@ body { background: #0b0f14; color: white; }
 
 .sideLink.active { opacity: 1; }
 .content { min-width: 0; }
+=======
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+.galleryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.galleryTile {
+  border: 1px solid rgba(217,203,164,0.18);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(245,245,220,0.03);
+  min-height: 120px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.galleryTile img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+.galleryCaption {
+  padding: 0.65rem 0.8rem;
+  color: rgba(245,245,220,0.85);
+  font-size: 0.95rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.6rem;
+  font-size: 1.15rem;
+  color: rgba(245,245,220,0.92);
+}
+
+
+.hero{
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+@media (max-width: 980px){
+  .hero{ grid-template-columns: 1fr; }
+}
+
+.hero__kicker{
+  display:inline-block;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(217,203,164,0.35);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+.hero__title{
+  margin: 0.7rem 0 0;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.08;
+}
+
+.hero__subtitle{ margin: 0.75rem 0 0; font-size: 1.05rem; }
+
+.hero__cta{
+  margin-top: 1rem;
+  display:flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero__badges{
+  margin-top: 1rem;
+  display:flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge{
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(166,124,93,0.35);
+  background: rgba(196,187,175,0.28);
+  font-size: 0.92rem;
+}
+
+.heroPanel{
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.1rem;
+  background: rgba(217,203,164,0.28);
+  box-shadow: var(--shadow);
+}
+.heroPanel__title{ font-weight: 800; margin-bottom: 0.75rem; }
+.heroPanel__row{ padding: 0.6rem 0; border-top: 1px solid rgba(166,124,93,0.22); }
+.heroPanel__row:first-of-type{ border-top: 0; }
+.heroPanel__name{ font-weight: 700; margin-bottom: 0.25rem; }
+
+.sectionHead{ margin-top: 1.5rem; }
+.cards3{
+  margin-top: 0.8rem;
+  display:grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 980px){
+  .cards3{ grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.productCard{ display:flex; flex-direction:column; gap: 0.5rem; }
+.productTag{
+  align-self: flex-start;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(166,124,93,0.18);
+  border: 1px solid rgba(166,124,93,0.35);
+  font-size: 0.9rem;
+}
+.productTitle{ margin: 0.2rem 0 0; }
+
+.ctaStrip{
+  margin-top: 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(196,187,175,0.28);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 720px){
+  .ctaStrip{ flex-direction: column; align-items: flex-start; }
+}
+
+
+
+.sidebar__title{
+  font-weight: 900;
+  margin-bottom: 0.9rem;
+}
+
+.sideBoxGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sideBox{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  padding: 0.85rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(217,203,164,0.25);
+  box-shadow: 0 10px 18px rgba(110,75,58,0.08);
+
+  transition: transform 0.06s ease, filter 0.15s ease, background 0.15s ease;
+}
+
+.sideBox:hover{
+  filter: brightness(1.02);
+}
+
+.sideBox:active{
+  transform: translateY(1px);
+}
+
+.sideBox.active{
+  background: rgba(166,124,93,0.18);
+  border-color: rgba(166,124,93,0.55);
+}
+
+.sideBox__title{
+  font-weight: 850;
+  margin-bottom: 0.25rem;
+}
+
+.sideBox__desc{
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+
+.table .input { padding: 0.5rem 0.65rem; border-radius: 12px; }
+<<<<<<< HEAD
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+=======
+>>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)

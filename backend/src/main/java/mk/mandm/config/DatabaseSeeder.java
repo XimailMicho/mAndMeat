@@ -1,10 +1,9 @@
 package mk.mandm.config;
 
 import mk.mandm.model.User;
-import mk.mandm.model.Role;
+import mk.mandm.model.enums.Role;
 import mk.mandm.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

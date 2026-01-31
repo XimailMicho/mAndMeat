@@ -1,10 +1,10 @@
 package mk.mandm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mk.mandm.model.enums.Role;
 
 @Getter
 @Setter

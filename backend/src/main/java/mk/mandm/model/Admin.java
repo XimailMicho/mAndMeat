@@ -1,10 +1,9 @@
 package mk.mandm.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import lombok.Getter;
 import lombok.Setter;
+import mk.mandm.model.enums.Role;
 
 @Getter
 @Setter
