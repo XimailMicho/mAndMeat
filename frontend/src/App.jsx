@@ -15,6 +15,7 @@ import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import PartnerNewOrder from "./pages/app/PartnerNewOrder.jsx";
 import PartnerOrders from "./pages/app/PartnerOrders.jsx";
 import WorkerQueue from "./pages/app/WorkerQueue.jsx";
+import AdminLayout from "./pages/admin/AdminLayout.jsx";
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
           path="/admin"
           element={
             <RequireRole role="ADMIN">
-              <AdminDashboard />
+              <AdminLayout />
             </RequireRole>
           }
         >
@@ -41,7 +42,6 @@ export default function App() {
           <Route path="partners" element={<AdminPartners />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
-          <Route path="users" element={<AdminUsers />} />
         </Route>
 
         {/* PARTNER */}

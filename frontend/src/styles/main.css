@@ -13,20 +13,10 @@
   --panel2: rgba(196,187,175,0.35); /* warmgray tint */
   --border: rgba(166,124,93,0.40);  /* clay border */
   --shadow: 0 10px 24px rgba(110,75,58,0.12);
-<<<<<<< HEAD
-=======
-}
-
-body{
-  margin:0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 }
 .muted{ color: var(--muted); }
 
-<<<<<<< HEAD
+
 body{
   margin:0;
   background: var(--bg);
@@ -35,7 +25,6 @@ body{
 }
 .muted{ color: var(--muted); }
 
-<<<<<<< HEAD
 * { box-sizing: border-box; }
 body { background: #0b0f14; color: white; }
 
@@ -61,7 +50,7 @@ body { background: #0b0f14; color: white; }
 }
 
 .label { display: block; margin-bottom: 0.75rem; }
-=======
+
 .container{
   max-width: 1100px;
   margin: 0 auto;
@@ -92,39 +81,7 @@ body { background: #0b0f14; color: white; }
   border: 1px solid var(--border);
 }
 
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
-=======
-.container{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: clamp(1rem, 3vw, 2rem);
-}
 
-.card{
-  background: rgba(245,245,220,0.65);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.25rem;
-  box-shadow: var(--shadow);
-}
-
-.btn{
-  background: var(--clay);
-  color: var(--cream);
-  border: 1px solid rgba(110,75,58,0.25);
-  padding: 0.7rem 1rem;
-  border-radius: 14px;
-  cursor: pointer;
-}
-.btn:hover{ filter: brightness(1.05); }
-
-.btn--ghost{
-  background: transparent;
-  color: var(--cocoa);
-  border: 1px solid var(--border);
-}
-
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
 
 .input {
   width: 100%;
@@ -179,8 +136,7 @@ body { background: #0b0f14; color: white; }
 .nav__brand{ font-weight: 900; letter-spacing: .2px; }
 .nav__hello{ color: var(--muted); }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 .btn--small { padding: 0.35rem 0.6rem; font-size: 0.9rem; }
 
 
@@ -195,11 +151,8 @@ body { background: #0b0f14; color: white; }
   .homeGrid { grid-template-columns: 2.4fr 0.8fr; }
 }
 
-.partnerGrid {
-=======
-=======
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
-/* HOME */
+
+
 .homeHero {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -235,16 +188,11 @@ body { background: #0b0f14; color: white; }
 }
 
 .gallery {
-<<<<<<< HEAD
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
-=======
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 @media (min-width: 700px) {
   .partnerGrid { grid-template-columns: 1fr 1fr; }
 }
@@ -315,9 +263,7 @@ body { background: #0b0f14; color: white; }
 
 .sideLink.active { opacity: 1; }
 .content { min-width: 0; }
-=======
-=======
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
+
 .galleryRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -504,7 +450,3 @@ body { background: #0b0f14; color: white; }
 
 
 .table .input { padding: 0.5rem 0.65rem; border-radius: 12px; }
-<<<<<<< HEAD
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
-=======
->>>>>>> 78c02e7 (Setup the skeleton for Orders and Products all their repositories and services, created frontend placeholders and the orderService in the frontend.)
