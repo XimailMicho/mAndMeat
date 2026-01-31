@@ -1,77 +1,150 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+
+const demoImages = [
+  { src: "https://picsum.photos/seed/meat1/900/600", label: "Fresh cuts & reliable supply" },
+  { src: "https://picsum.photos/seed/meat2/900/600", label: "Consistent quality control" },
+  { src: "https://picsum.photos/seed/meat3/900/600", label: "Fast delivery & pickup" },
+];
+
+const demoProducts = [
+  { name: "Beef (Premium)", unit: "KG", note: "Fresh, trimmed, ready for sale." },
+  { name: "Chicken Fillet", unit: "KG", note: "Daily availability, clean packaging." },
+  { name: "Sausage Pack", unit: "UNIT", note: "Per unit packs, consistent weight." },
+  { name: "Minced Meat", unit: "KG", note: "Popular choice for restaurants." },
+];
 
 export default function Home() {
-  const { user } = useAuth();
-
   return (
     <main className="container">
-      <div className="homeGrid">
-        <section className="card">
-          <h1 style={{ marginTop: 0 }}>M&amp;M Meat Industry</h1>
-          <p className="muted">
-            Order tracking for partners, operational queue for workers, and full oversight for admins.
+      {/* HERO */}
+      <section className="hero">
+        <div className="hero__left">
+          <div className="kicker">M&M • Meat Supply & Distribution</div>
+          <h1 className="hero__title">
+            Reliable meat supply for partners who need consistency.
+          </h1>
+          <p className="hero__subtitle">
+            We help restaurants, markets, and partners order faster, track delivery, and keep pricing transparent.
           </p>
 
-          <div className="card" style={{ marginTop: 12 }}>
-            <h3 style={{ marginTop: 0 }}>What you can do</h3>
-            <ul className="list">
-              <li>Partners submit orders with per-KG and per-Unit products.</li>
-              <li>Admins approve/reject and manage products & users.</li>
-              <li>Workers see the approved queue and process orders.</li>
-            </ul>
+          <div className="hero__cta">
+            <Link className="btn btn--primary" to="/login">
+              Partner Login
+            </Link>
+            <a className="btn btn--ghost" href="#catalogue">
+              View Catalogue
+            </a>
           </div>
 
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
-            {!user && (
-              <Link className="btn" to="/login">
-                Login
-              </Link>
-            )}
-
-            {user?.role === "PARTNER" && (
-              <>
-                <Link className="btn" to="/app/order/new">New Order</Link>
-                <Link className="btn btn--ghost" to="/app/orders">My Orders</Link>
-              </>
-            )}
-
-            {user?.role === "WORKER" && (
-              <Link className="btn" to="/app/queue">Queue</Link>
-            )}
-
-            {user?.role === "ADMIN" && (
-              <Link className="btn" to="/admin">Admin</Link>
-            )}
+          <div className="hero__stats">
+            <div className="stat">
+              <div className="stat__num">24/7</div>
+              <div className="stat__label">Order tracking</div>
+            </div>
+            <div className="stat">
+              <div className="stat__num">Fast</div>
+              <div className="stat__label">Approvals & packing</div>
+            </div>
+            <div className="stat">
+              <div className="stat__num">Clear</div>
+              <div className="stat__label">Pricing snapshot</div>
+            </div>
           </div>
-        </section>
+        </div>
 
-        <aside className="card">
-          <h3 style={{ marginTop: 0 }}>Partners</h3>
-          <p className="muted">
-            This section will later show partner logos/cards and a rotating gallery.
+        <div className="hero__right">
+          <div className="imageGrid">
+            {demoImages.map((img) => (
+              <div className="imageTile" key={img.src}>
+                <img src={img.src} alt={img.label} />
+                <div className="imageTile__cap">{img.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="section">
+        <div className="sectionHead">
+          <h2 className="sectionTitle">How we work</h2>
+          <p className="muted">Simple flow: order → approval → packing → ready.</p>
+        </div>
+
+        <div className="cards3">
+          <div className="card card--feature">
+            <h3>Transparent pricing</h3>
+            <p className="muted">
+              Prices are locked at submission/creation so everyone knows the exact snapshot for each order item.
+            </p>
+          </div>
+          <div className="card card--feature">
+            <h3>Fast operations</h3>
+            <p className="muted">
+              Admin approves, workers pack, and status updates keep partners informed automatically.
+            </p>
+          </div>
+          <div className="card card--feature">
+            <h3>Partner-first</h3>
+            <p className="muted">
+              Partners can submit orders anytime, view history, and see item breakdowns clearly.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CATALOGUE PREVIEW */}
+      <section id="catalogue" className="section section--alt">
+        <div className="sectionHead">
+          <h2 className="sectionTitle">Catalogue preview</h2>
+          <p className="muted">A clean overview of products (full list inside the system).</p>
+        </div>
+
+        <div className="productGrid">
+          {demoProducts.map((p) => (
+            <div className="card productCard" key={p.name}>
+              <div className="productCard__top">
+                <div className="productCard__name">{p.name}</div>
+                <span className="tag">{p.unit}</span>
+              </div>
+              <div className="muted">{p.note}</div>
+              <div className="productCard__bottom">
+                <span className="hint">Pricing shown after login</span>
+                <Link className="link" to="/login">Login →</Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PARTNERS */}
+      <section className="section">
+        <div className="sectionHead">
+          <h2 className="sectionTitle">Trusted by partners</h2>
+          <p className="muted">Your partners list can be loaded from backend later.</p>
+        </div>
+
+        <div className="partnerStrip">
+          <div className="partnerPill">Partner A</div>
+          <div className="partnerPill">Partner B</div>
+          <div className="partnerPill">Partner C</div>
+          <div className="partnerPill">Partner D</div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="ctaStrip">
+        <div>
+          <h3 style={{ margin: 0 }}>Want to partner with M&M?</h3>
+          <p className="muted" style={{ margin: "0.35rem 0 0" }}>
+            Contact us for onboarding and account setup.
           </p>
-
-          <div className="partnerGrid" style={{ marginTop: 12 }}>
-            <div className="partnerCard">
-              <div className="partnerName">Partner A</div>
-              <div className="muted">Wholesale</div>
-            </div>
-            <div className="partnerCard">
-              <div className="partnerName">Partner B</div>
-              <div className="muted">Retail</div>
-            </div>
-            <div className="partnerCard">
-              <div className="partnerName">Partner C</div>
-              <div className="muted">Restaurant</div>
-            </div>
-            <div className="partnerCard">
-              <div className="partnerName">Partner D</div>
-              <div className="muted">Distributor</div>
-            </div>
-          </div>
-        </aside>
-      </div>
+        </div>
+        <div className="ctaStrip__actions">
+          <a className="btn btn--primary" href="mailto:info@mandm.example">Contact</a>
+          <Link className="btn btn--ghost" to="/login">Login</Link>
+        </div>
+      </section>
     </main>
   );
 }
