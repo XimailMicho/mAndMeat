@@ -1,13 +1,17 @@
-import { Fragment, useState } from "react";
-import { formatDateTime, formatDate, formatCurrency } from "../utils/format";
+import { useState } from "react";
+import { formatDateTime, formatDate, formatCurrency } from "../utils/format.js";
 
-
+function StatusBadge({ status }) {
+  const cls = `badge badge--${String(status ?? "").toLowerCase()}`;
+  return <span className={cls}>{status ?? "-"}</span>;
+}
 
 export default function OrderList({
-  orders,
+  orders = [],
   showPartner = false,
-  actionsForOrder,
-  renderStatus,
+  actionsForOrder,          // (order) => JSX
+  renderStatus,             // (status) => JSX
+  renderItemAction,         // (order, item) => JSX
 }) {
   const [openId, setOpenId] = useState(null);
 
@@ -16,41 +20,48 @@ export default function OrderList({
   }
 
   const hasActions = typeof actionsForOrder === "function";
-  const colCount = (showPartner ? 6 : 5) + (hasActions ? 1 : 0);
+  const hasItemAction = typeof renderItemAction === "function";
 
   return (
     <div className="tableWrap">
       <table className="table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th style={{ width: 90 }}>ID</th>
             {showPartner && <th>Partner</th>}
-            <th>Status</th>
-            <th>Created</th>
-            <th>Delivery</th>
-            <th>Total (MKD)</th>
-            {hasActions && <th style={{ width: 1 }} />}
+            <th style={{ width: 160 }}>Status</th>
+            <th style={{ width: 160 }}>Created</th>
+            <th style={{ width: 150 }}>Delivery</th>
+            <th style={{ width: 150 }}>Total</th>
+            {hasActions && <th className="cell--actions">Actions</th>}
           </tr>
         </thead>
 
         <tbody>
-          {orders.map((o) => (
-            <FragmentRow
-              key={o.id}
-              order={o}
-              isOpen={openId === o.id}
-              onToggle={() => toggle(o.id)}
-              showPartner={showPartner}
-              hasActions={hasActions}
-              actionsForOrder={actionsForOrder}
-              renderStatus={renderStatus}
-              colCount={colCount}
-            />
-          ))}
+          {orders.map((o) => {
+            const isOpen = openId === o.id;
+            return (
+              <OrderRow
+                key={o.id}
+                order={o}
+                isOpen={isOpen}
+                onToggle={() => toggle(o.id)}
+                showPartner={showPartner}
+                hasActions={hasActions}
+                actionsForOrder={actionsForOrder}
+                renderStatus={renderStatus}
+                hasItemAction={hasItemAction}
+                renderItemAction={renderItemAction}
+              />
+            );
+          })}
 
           {orders.length === 0 && (
             <tr>
-              <td colSpan={colCount} className="muted">
+              <td
+                colSpan={showPartner ? (hasActions ? 7 : 6) : (hasActions ? 6 : 5)}
+                className="muted"
+              >
                 No orders.
               </td>
             </tr>
@@ -61,31 +72,36 @@ export default function OrderList({
   );
 }
 
-function FragmentRow({
-  order: o,
+function OrderRow({
+  order,
   isOpen,
   onToggle,
   showPartner,
   hasActions,
   actionsForOrder,
   renderStatus,
-  colCount,
+  hasItemAction,
+  renderItemAction,
 }) {
+  const o = order ?? {};
+  const items = Array.isArray(o.items) ? o.items : [];
+
   return (
-    <Fragment>
-      <tr style={{ cursor: "pointer" }} onClick={onToggle} title="Click to view items">
-        <td>{o.id}</td>
-        {showPartner && <td>{o.partnerEmail}</td>}
-        <td>{renderStatus ? renderStatus(o.status) : o.status}</td>
+    <>
+      <tr className="tableRowClickable" onClick={onToggle} title="Click to view items">
+        <td className="cell--mono">{o.id}</td>
+        {showPartner && <td>{o.partnerEmail ?? "-"}</td>}
+
+        <td>
+          {renderStatus ? renderStatus(o.status) : <StatusBadge status={o.status} />}
+        </td>
+
         <td>{formatDateTime(o.createdAt)}</td>
-        <td>{o.deliveryDate ?? "-"}</td>
+        <td>{o.deliveryDate ? formatDate(o.deliveryDate) : "-"}</td>
         <td>{formatCurrency(o.totalMkd)}</td>
 
         {hasActions && (
-          <td
-            onClick={(e) => e.stopPropagation()} // prevents row toggle when clicking button
-            style={{ whiteSpace: "nowrap" }}
-          >
+          <td className="cell--actions" onClick={(e) => e.stopPropagation()}>
             {actionsForOrder(o)}
           </td>
         )}
@@ -93,8 +109,8 @@ function FragmentRow({
 
       {isOpen && (
         <tr>
-          <td colSpan={colCount}>
-            <div className="card" style={{ marginTop: 8 }}>
+          <td colSpan={showPartner ? (hasActions ? 7 : 6) : (hasActions ? 6 : 5)}>
+            <div className="card card--flat" style={{ marginTop: 8 }}>
               {o.notes && (
                 <p className="muted" style={{ marginTop: 0 }}>
                   {o.notes}
@@ -106,26 +122,33 @@ function FragmentRow({
                   <thead>
                     <tr>
                       <th>Product</th>
-                      <th>Unit</th>
-                      <th>Qty</th>
-                      <th>Price</th>
-                      <th>Line Total</th>
+                      <th style={{ width: 90 }}>Unit</th>
+                      <th style={{ width: 120 }}>Qty</th>
+                      <th style={{ width: 140 }}>Price</th>
+                      <th style={{ width: 140 }}>Line</th>
+                      {hasItemAction && <th className="cell--actions">Packed</th>}
                     </tr>
                   </thead>
+
                   <tbody>
-                    {o.items?.map((it) => (
+                    {items.map((it) => (
                       <tr key={it.id}>
-                        <td>{it.productName}</td>
-                        <td>{it.unit}</td>
-                        <td>{it.quantity}</td>
-                        <td>{it.priceMkdSnapshot}</td>
-                        <td>{it.lineTotalMkd}</td>
+                        <td>{it.productName ?? "-"}</td>
+                        <td>{it.unit ?? "-"}</td>
+                        <td className="cell--mono">{it.quantity ?? "-"}</td>
+                        <td>{formatCurrency(it.priceMkdSnapshot)}</td>
+                        <td>{formatCurrency(it.lineTotalMkd)}</td>
+                        {hasItemAction && (
+                          <td className="cell--actions">
+                            {renderItemAction(o, it)}
+                          </td>
+                        )}
                       </tr>
                     ))}
 
-                    {(!o.items || o.items.length === 0) && (
+                    {items.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="muted">
+                        <td colSpan={hasItemAction ? 6 : 5} className="muted">
                           No items.
                         </td>
                       </tr>
@@ -137,6 +160,6 @@ function FragmentRow({
           </td>
         </tr>
       )}
-    </Fragment>
+    </>
   );
 }
