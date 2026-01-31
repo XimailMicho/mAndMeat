@@ -7,6 +7,7 @@ import lombok.Setter;
 import mk.mandm.model.enums.Unit;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -37,6 +38,14 @@ public class OrderItem {
     // snapshot at submission (MKD per unit)
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal priceMkdSnapshot;
-    
 
+    @Column(nullable = false)
+    private boolean packed = false;
+
+    @Column(name = "packed_at")
+    private Instant packedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "packed_by_id")
+    private User packedBy;
 }

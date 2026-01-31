@@ -21,20 +21,24 @@ public class OrderService {
     private final ProductPriceRepository productPriceRepository;
     private final PartnerRepository partnerRepository;
     private final UserRepository userRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public OrderService(
             OrderRepository orderRepository,
             ProductRepository productRepository,
             ProductPriceRepository productPriceRepository,
             PartnerRepository partnerRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            OrderItemRepository orderItemRepository
     ) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.productPriceRepository = productPriceRepository;
         this.partnerRepository = partnerRepository;
         this.userRepository = userRepository;
+        this.orderItemRepository = orderItemRepository;
     }
+
 
     private User currentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -143,6 +147,57 @@ public class OrderService {
                 .toList();
     }
 
+    @Transactional
+    public void workerSetPacked(Long orderId, Long itemId, boolean packed) {
+        User worker = currentUser();
+        if (worker.getRole() != Role.WORKER) {
+            throw new IllegalArgumentException("Worker only.");
+        }
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found."));
+
+        // Only allow packing for orders workers can work on
+        if (!(order.getStatus() == OrderStatus.APPROVED
+                || order.getStatus() == OrderStatus.IN_PROGRESS
+                || order.getStatus() == OrderStatus.READY)) {
+            throw new IllegalArgumentException("Order is not in a packable state.");
+        }
+
+        OrderItem item = orderItemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Order item not found."));
+
+        if (!item.getOrder().getId().equals(orderId)) {
+            throw new IllegalArgumentException("Item does not belong to this order.");
+        }
+
+        // Update packed fields
+        item.setPacked(packed);
+        if (packed) {
+            item.setPackedAt(Instant.now());
+            item.setPackedBy(worker);
+        } else {
+            item.setPackedAt(null);
+            item.setPackedBy(null);
+        }
+
+        // Recompute status based on ALL items packed state
+        List<OrderItem> items = orderItemRepository.findByOrderId(orderId);
+
+        boolean anyPacked = items.stream().anyMatch(OrderItem::isPacked);
+        boolean allPacked = !items.isEmpty() && items.stream().allMatch(OrderItem::isPacked);
+
+        if (allPacked) {
+            order.setStatus(OrderStatus.READY);
+        } else if (anyPacked) {
+            order.setStatus(OrderStatus.IN_PROGRESS);
+        } else {
+            // revert behavior (optional, but matches your stated rule)
+            order.setStatus(OrderStatus.APPROVED);
+        }
+    }
+
+
 
     private Order buildOrderFromRequest(CreateOrderRequest req, Partner partner, User creator) {
         if (req.items() == null || req.items().isEmpty()) {
@@ -192,10 +247,10 @@ public class OrderService {
     }
 
     private OrderResponse toResponse(Order o) {
-        BigDecimal total = BigDecimal.ZERO;
 
         List<OrderItemResponse> items = o.getItems().stream().map(oi -> {
             BigDecimal lineTotal = oi.getPriceMkdSnapshot().multiply(oi.getQuantity());
+
             return new OrderItemResponse(
                     oi.getId(),
                     oi.getProduct().getId(),
@@ -203,11 +258,18 @@ public class OrderService {
                     oi.getUnit(),
                     oi.getQuantity(),
                     oi.getPriceMkdSnapshot(),
-                    lineTotal
+                    lineTotal,
+
+                    // ✅ NEW packed fields (read-only)
+                    oi.isPacked(),
+                    oi.getPackedAt(),
+                    oi.getPackedBy() != null ? oi.getPackedBy().getEmail() : null
             );
         }).toList();
 
-        for (OrderItemResponse r : items) total = total.add(r.lineTotalMkd());
+        BigDecimal total = items.stream()
+                .map(OrderItemResponse::lineTotalMkd)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return new OrderResponse(
                 o.getId(),
@@ -221,4 +283,5 @@ public class OrderService {
                 items
         );
     }
+
 }

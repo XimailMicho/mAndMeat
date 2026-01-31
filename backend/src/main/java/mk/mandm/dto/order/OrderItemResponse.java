@@ -3,6 +3,7 @@ package mk.mandm.dto.order;
 import mk.mandm.model.enums.Unit;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 public record OrderItemResponse(
         Long id,
@@ -11,5 +12,8 @@ public record OrderItemResponse(
         Unit unit,
         BigDecimal quantity,
         BigDecimal priceMkdSnapshot,
-        BigDecimal lineTotalMkd
+        BigDecimal lineTotalMkd,
+        boolean packed,
+        Instant packedAt,
+        String packedByEmail
 ) {}
