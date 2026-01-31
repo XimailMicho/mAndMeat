@@ -58,14 +58,6 @@ export async function adminApproveOrder(token, orderId) {
   return handle(res);
 }
 
-export async function adminRejectOrder(token, orderId, reason) {
-  const res = await fetch(`${API_BASE}/api/admin/orders/${orderId}/reject`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: reason ?? "",
-  });
-  return handle(res);
-}
 
 export async function adminListAllOrders(token) {
   const res = await fetch(`${API_BASE}/api/admin/orders`, {
@@ -73,6 +65,31 @@ export async function adminListAllOrders(token) {
   });
   return handle(res);
 }
+
+export async function adminCreateApprovedOrder(token, payload) {
+  const res = await fetch(`${API_BASE}/api/admin/orders/create-approved`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return handle(res);
+}
+
+export async function adminRejectOrder(token, orderId, reason) {
+  const res = await fetch(`${API_BASE}/api/admin/orders/${orderId}/reject`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain",
+      Authorization: `Bearer ${token}`,
+    },
+    body: reason ?? "",
+  });
+  return handle(res);
+}
+
 
 /* WORKER */
 export async function workerQueue(token) {

@@ -111,12 +111,19 @@ function OrderRow({
         <tr>
           <td colSpan={showPartner ? (hasActions ? 7 : 6) : (hasActions ? 6 : 5)}>
             <div className="card card--flat" style={{ marginTop: 8 }}>
-              {o.notes && (
-                <p className="muted" style={{ marginTop: 0 }}>
-                  {o.notes}
-                </p>
-              )}
+                {/* Admin notes */}
+                {o.notes && (
+                  <p className="muted" style={{ marginTop: 0 }}>
+                    {o.notes}
+                  </p>
+                )}
 
+                {/* Rejection reason */}
+                {o.status === "REJECTED" && o.rejectionReason && (
+                  <div className="error" style={{ marginTop: 8 }}>
+                    <strong>Order rejected:</strong> {o.rejectionReason}
+                  </div>
+                )}
               <div className="tableWrap">
                 <table className="table">
                   <thead>
