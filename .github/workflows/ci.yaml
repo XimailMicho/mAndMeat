@@ -3,10 +3,10 @@ name: CI Build Test
 on:
   push:
     branches:
-      branches: [ feature/ci ]
+      - feature/ci
   pull_request:
     branches:
-      branches: [ feature/ci ]
+      - feature/ci
 
 jobs:
   build-images:
@@ -35,3 +35,4 @@ jobs:
             --build-arg VITE_API_BASE=http://localhost:8080 \
             -t mandm-frontend:test \
             ./frontend
+
