@@ -1,38 +1,76 @@
-name: CI Build Test
+name: Build & Push Images (Docker Hub)
 
 on:
   push:
     branches:
-      - feature/ci
-  pull_request:
-    branches:
-      - feature/ci
+      - "main"
+      - "feature/ci"
+  workflow_dispatch:
+
+env:
+  REGISTRY: docker.io
+  IMAGE_BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/mandm-backend
+  IMAGE_FRONTEND: ${{ secrets.DOCKERHUB_USERNAME }}/mandm-frontend
 
 jobs:
-  build-images:
-    name: Build Backend & Frontend Docker Images
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Optional: speed up builds
+      - name: Set up QEMU (multi-arch)
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # ---------- BACKEND ----------
-      - name: Build backend image
-        run: |
-          docker build \
-            -t mandm-backend:test \
-            ./backend
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # ---------- FRONTEND ----------
-      - name: Build frontend image
+      - name: Compute tags
+        id: tags
         run: |
-          docker build \
-            --build-arg VITE_API_BASE=http://localhost:8080 \
-            -t mandm-frontend:test \
-            ./frontend
+          SHORT_SHA="${GITHUB_SHA::7}"
+          BRANCH="${GITHUB_REF_NAME}"
+          BRANCH_TAG="branch-${BRANCH//\//-}"
+
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "branch_tag=$BRANCH_TAG" >> $GITHUB_OUTPUT
+
+      # -------------------------
+      # Backend build + push
+      # -------------------------
+      - name: Build & Push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_BACKEND }}:sha-${{ steps.tags.outputs.short_sha }}
+            ${{ env.IMAGE_BACKEND }}:${{ steps.tags.outputs.branch_tag }}
+            ${{ github.ref_name == 'main' && format('{0}:latest', env.IMAGE_BACKEND) || '' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # -------------------------
+      # Frontend build + push
+      # -------------------------
+      - name: Build & Push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_FRONTEND }}:sha-${{ steps.tags.outputs.short_sha }}
+            ${{ env.IMAGE_FRONTEND }}:${{ steps.tags.outputs.branch_tag }}
+            ${{ github.ref_name == 'main' && format('{0}:latest', env.IMAGE_FRONTEND) || '' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
