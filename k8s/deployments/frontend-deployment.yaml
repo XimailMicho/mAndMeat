@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mandm-frontend
+  namespace: mandm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mandm-frontend
+  template:
+    metadata:
+      labels:
+        app: mandm-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ximailsemaro/mandm-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+

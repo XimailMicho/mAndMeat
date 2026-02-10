@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mandm-frontend
+  namespace: mandm
+spec:
+  selector:
+    app: mandm-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+

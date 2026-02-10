@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mandm-backend
+  namespace: mandm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mandm-backend
+  template:
+    metadata:
+      labels:
+        app: mandm-backend
+    spec:
+      containers:
+        - name: backend
+          image: ximailsemaro/mandm-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: mandm-backend-config
+            - secretRef:
+                name: mandm-backend-secret
+          
+
