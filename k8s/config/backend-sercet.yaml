@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mandm-backend-secret
+  namespace: mandm
+type: Opaque
+stringData:
+  JWT_SECRET: "133e790a79d9b20b157921aa9078e0e3fd05809dbd10f7b746a29b84482f1563"
+  SPRING_DATASOURCE_USERNAME: "mandmuser"
+  SPRING_DATASOURCE_PASSWORD: "mandmpass"

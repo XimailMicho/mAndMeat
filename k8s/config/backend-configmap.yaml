@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mandm-backend-config
+  namespace: mandm
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://mandm-postgres:5432/mandm"

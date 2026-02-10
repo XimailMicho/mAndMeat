@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mandm-postgres
+  namespace: mandm
+spec:
+  serviceName: mandm-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mandm-postgres
+  template:
+    metadata:
+      labels:
+        app: mandm-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: mandm-postgres-secret   # <-- fix spelling to match your Secret
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
+
+    
+
+
